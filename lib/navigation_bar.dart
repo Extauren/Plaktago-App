@@ -6,7 +6,7 @@ import 'package:plaktago/utils/check_update.dart';
 import 'package:plaktago/utils/isar_service.dart';
 import 'home/home.dart';
 import 'statistic/statistic.dart';
-import 'help/help.dart';
+import 'settings/settings.dart';
 
 class NavigationBarApp extends StatefulWidget {
   final Function changeTheme;
@@ -83,7 +83,10 @@ class _NavigationBar extends State<NavigationBarApp> {
         isarService: widget.isarService,
       ),
       Statistic(appSettings: widget.appSettings),
-      Help()
+      Settings(
+        isarService: widget.isarService,
+        appSettings: widget.appSettings,
+      )
     ];
   }
 
@@ -117,7 +120,7 @@ class _NavigationBar extends State<NavigationBarApp> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
-                label: 'Settings',
+                label: 'Paramètres',
               ),
             ],
             currentIndex: _selectedIndex,

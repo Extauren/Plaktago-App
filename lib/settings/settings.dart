@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plaktago/components/app_bar.dart';
+import 'package:plaktago/components/dialog.dart';
+import 'package:plaktago/components/outlined_button.dart';
+import 'package:plaktago/components/table.dart';
+import 'package:plaktago/data_class/app_settings.dart';
 import 'package:plaktago/game/board/card_name.dart';
-import 'package:plaktago/help/github_page.dart';
+import 'package:plaktago/settings/github_page.dart';
 import 'package:plaktago/home/bingo_type_button.dart';
+import 'package:plaktago/utils/isar_service.dart';
 
-class Help extends StatefulWidget {
-  Help({
-    Key? key,
-  }) : super(key: key);
+class Settings extends StatefulWidget {
+  final IsarService isarService;
+  final AppSettings appSettings;
+  Settings({Key? key, required this.isarService, required this.appSettings});
 
   @override
-  State<Help> createState() => _Help();
+  State<Settings> createState() => _Settings();
 }
 
-class _Help extends State<Help> {
+class _Settings extends State<Settings> {
   List<CardName> cardsName = cardNameListPlaque;
 
   @override
@@ -39,17 +44,51 @@ class _Help extends State<Help> {
     return i.join(', ');
   }
 
+  void resetData() {
+    PDialog(
+            context: context,
+            title: "Supprimer les données",
+            desc: "Etes vous sur de vouloir supprimer toutes les données ?",
+            bntOkOnPress: widget.isarService.deleteAllData)
+        .show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PAppBar(title: Text("Aide")),
-        body: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(FontAwesomeIcons.personDigging, size: 40),
-          SizedBox(height: 20),
-          Text("En construction", style: TextStyle(fontSize: 22)),
-        ]))
+        appBar: PAppBar(title: Text("Paramètres")),
+        body: ListView(children: [
+          SizedBox(height: 40),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Plaktago est une application open source qui ne récolte aucunes données sur ces utilisateurs.',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Center(
+              child: TextButton(
+                  onPressed: goToGithubPage,
+                  child: Text("Le code source est disponible sur Github",
+                      style: TextStyle(fontSize: 16)))),
+          POutlinedButton(
+            label: "Supprimer toutes les données",
+            onPressed: resetData,
+            height: 38,
+            width: 230,
+            margin: EdgeInsets.symmetric(vertical: 20),
+            labelFontSize: 15,
+          ),
+          PTable(
+      headerText: cardsName.,
+      rowsText: rowsText,
+      nbRows: widget.nbRows,
+      headingRowHeight: widget.headingRowHeight,
+      dataRowHeight: widget.dataRowHeight,
+    );
+        ])
+
         //ListView(children: [
         // Container(
         //     margin: EdgeInsets.only(top: 20, bottom: 10),
@@ -57,14 +96,7 @@ class _Help extends State<Help> {
         //       FontAwesomeIcons.github,
         //       size: 40,
         //     )),
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: 20),
-        //   child: Text(
-        //     'Cette application est open source, et le code est disponible sur Github : ',
-        //     style: TextStyle(fontSize: 16),
-        //     textAlign: TextAlign.center,
-        //   ),
-        // ),
+
         // TextButton(
         //     onPressed: goToGithubPage,
         //     child: Text("https://github.com/Extauren/Plaktago-App",
